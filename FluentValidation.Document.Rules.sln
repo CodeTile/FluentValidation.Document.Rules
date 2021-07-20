@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentValidation.Document.Rules", "src\FluentValidation.Document.Rules\FluentValidation.Document.Rules.csproj", "{7BF983AC-7A17-41B1-82CE-6DFF79902D42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentValidation.Document.Rules", "src\FluentValidation.Document.Rules\FluentValidation.Document.Rules.csproj", "{7BF983AC-7A17-41B1-82CE-6DFF79902D42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.ModelsProject", "Tests\Test.ModelsProject\Test.ModelsProject.csproj", "{71B90774-B9C2-4CFE-8A52-0479B45C3254}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.ModelsProject", "Tests\Test.ModelsProject\Test.ModelsProject.csproj", "{71B90774-B9C2-4CFE-8A52-0479B45C3254}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3F29AB0A-339F-4634-8A25-3F92238604D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.ValidatorsProject", "Tests.ValidatorsProject\Tests.ValidatorsProject.csproj", "{57A718A2-2BFB-4899-B5AE-4707D14B0366}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "Tests\ConsoleApp1\ConsoleApp1.csproj", "{08FD4CF3-5F9B-4066-A1B1-FDE2054C6E2E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{71B90774-B9C2-4CFE-8A52-0479B45C3254} = {71B90774-B9C2-4CFE-8A52-0479B45C3254}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.ValidatorsProject", "Tests\Tests.ValidatorsProject\Tests.ValidatorsProject.csproj", "{8AE11AFA-CF1D-47E7-B662-96B00A5A1E13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,17 +30,22 @@ Global
 		{71B90774-B9C2-4CFE-8A52-0479B45C3254}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71B90774-B9C2-4CFE-8A52-0479B45C3254}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71B90774-B9C2-4CFE-8A52-0479B45C3254}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57A718A2-2BFB-4899-B5AE-4707D14B0366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57A718A2-2BFB-4899-B5AE-4707D14B0366}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57A718A2-2BFB-4899-B5AE-4707D14B0366}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57A718A2-2BFB-4899-B5AE-4707D14B0366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08FD4CF3-5F9B-4066-A1B1-FDE2054C6E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08FD4CF3-5F9B-4066-A1B1-FDE2054C6E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08FD4CF3-5F9B-4066-A1B1-FDE2054C6E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08FD4CF3-5F9B-4066-A1B1-FDE2054C6E2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AE11AFA-CF1D-47E7-B662-96B00A5A1E13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AE11AFA-CF1D-47E7-B662-96B00A5A1E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AE11AFA-CF1D-47E7-B662-96B00A5A1E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AE11AFA-CF1D-47E7-B662-96B00A5A1E13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{71B90774-B9C2-4CFE-8A52-0479B45C3254} = {3F29AB0A-339F-4634-8A25-3F92238604D3}
-		{57A718A2-2BFB-4899-B5AE-4707D14B0366} = {3F29AB0A-339F-4634-8A25-3F92238604D3}
+		{08FD4CF3-5F9B-4066-A1B1-FDE2054C6E2E} = {3F29AB0A-339F-4634-8A25-3F92238604D3}
+		{8AE11AFA-CF1D-47E7-B662-96B00A5A1E13} = {3F29AB0A-339F-4634-8A25-3F92238604D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF4177B0-07DA-400B-A115-A456FF802DD5}
