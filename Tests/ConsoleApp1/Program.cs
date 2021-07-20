@@ -11,8 +11,6 @@ namespace ConsoleApp1
             {
                 x.DocumentAssembly();
             }
-
-            Console.ReadKey();
         }
     }
 }

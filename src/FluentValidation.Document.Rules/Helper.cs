@@ -8,6 +8,13 @@ namespace FluentValidation.Document.Rules
 {
     public static class Helper
     {
+        private static string ResolvePath(string location)
+        {
+            return location
+                       .Replace("{Desktop}", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), StringComparison.OrdinalIgnoreCase)
+                       .Replace("{MyDocuments}", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), StringComparison.OrdinalIgnoreCase);
+        }
+
         public static class Refelction
         {
             private const BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.GetProperty | BindingFlags.Default;
@@ -90,6 +97,11 @@ namespace FluentValidation.Document.Rules
                 }
 #endif
                 return builder.Build();
+            }
+
+            public static class ExportFolder
+            {
+                public static string Markdown => ResolvePath(Configuration["ExportFolder:Markdown"]);
             }
         }
     }

@@ -10,13 +10,15 @@ namespace Tests.ValidatorsProject
         {
             RuleFor(m => m.AvailableFrom).GreaterThanOrEqualTo(new DateTime(2000, 1, 1)).WithMessage("Available from must be greater than 1 Jan 2000");
             RuleFor(m => m.AvailableTo)
-                .GreaterThanOrEqualTo(m => m.AvailableFrom)
-                .WithMessage("Available to must be greater than availble from")
+                .GreaterThanOrEqualTo(m => m.AvailableFrom).WithMessage("Available to must be greater than availble from")
                 .Unless(m => m.AvailableTo == null);
-            RuleFor(m => m.Name).NotEmpty()
-                    .Length(3, 5);
+            RuleFor(m => m.Name)
+                    .NotEmpty().WithMessage("Name is requried")
+                    .Length(3, 5).WithMessage("Name must be between 3 and 5 characters long.");
             RuleFor(m => m.ProductId).GreaterThanOrEqualTo(0);
             RuleFor(m => m.RRP).GreaterThan(0);
+            RuleFor(m => m.ProductDetails)
+                .NotNull().WithMessage("Details are required!");
         }
     }
 }
