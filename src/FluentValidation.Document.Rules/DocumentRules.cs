@@ -35,7 +35,8 @@ namespace FluentValidation.Document.Rules
                 AssemblyFullPath = assemblyPath,
             };
             var assembly = Assembly.LoadFrom(assemblyPath);
-            foreach (Type validatorType in assembly.GetTypes().Where(m => m.BaseType.Name.StartsWith("AbstractValidator")).OrderBy(m=>m.FullName) )
+            var possibleValidators = assembly.GetTypes().Where(m => m.BaseType != null)?.OrderBy(m => m.FullName);
+            foreach (Type validatorType in possibleValidators.Where(m => m.BaseType.Name.Contains("AbstractValidator")))
             {
                 var rulesForValidator = new RuleValidator()
                 {
@@ -143,13 +144,19 @@ namespace FluentValidation.Document.Rules
                             else if (a.MemberToCompare != null)
                             {
                                 string sign = "";
-                                sign = pv switch
-                                {
-                                    IGreaterThanOrEqualValidator => " >= ",
-                                    ILessThanOrEqualValidator => " <= ",
-                                    _ => throw new NotImplementedException(),
-                                };
+                                if (pv is IGreaterThanOrEqualValidator)
+                                    sign = " >= ";
+                                else if (pv is ILessThanOrEqualValidator)
+                                    sign = " <= ";
+                                else if (pv.Name.Equals("GreaterThanValidator"))
+                                    sign = " > ";
+                                else if (pv.Name.Equals("LessThanValidator"))
+                                    sign = " < ";
+                                else
+                                    throw new NotImplementedException();
+
                                 valueToCompare = $"{sign} {a.MemberToCompare.Name}";
+
                             }
                         }
                         else if (pv is IExactLengthValidator)
