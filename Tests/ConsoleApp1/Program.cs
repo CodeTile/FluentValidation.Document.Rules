@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentValidation.Document.Rules;
+using FluentValidation.Document.Rules.enums;
 
 namespace ConsoleApp1
 {
@@ -7,8 +8,8 @@ namespace ConsoleApp1
     {
         private static void Main(string[] args)
         {
-            using var x = new DocumentRules();
-            x.DocumentAssembly();
+            using var x = new DocumentRules();            
+            x.DocumentAssembly(OutputType.Markdown);
         }
     }
 }

@@ -17,17 +17,15 @@ namespace FluentValidation.Document.Rules
         {
         }
 
-        public void DocumentAssembly()
+        public void DocumentAssembly(OutputType outputType = OutputType.Markdown)
         {
-            DocumentAssembly(Helper.Settings.AssemblyToDocument);
+            DocumentAssembly(Helper.Settings.AssemblyToDocument, outputType);
         }
 
-        public void DocumentAssembly(string assemblyPath)
+        public void DocumentAssembly(string assemblyPath, OutputType outputType = OutputType.Markdown)
         {
             Console.WriteLine($"Documenting Assembly : {Helper.Settings.AssemblyToDocument}");
-            //var extractedRulesforAssembly = new ArrayList();
-            // ExtractRulesForAssembly(assemblyPath);
-            DocumentRulesForAssembly(ExtractRulesForAssembly(assemblyPath), OutputType.Markdown);
+            DocumentRulesForAssembly(ExtractRulesForAssembly(assemblyPath), outputType);
         }
 
         private static RuleAssembly ExtractRulesForAssembly(string assemblyPath)
