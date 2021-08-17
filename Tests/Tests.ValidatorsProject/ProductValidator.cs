@@ -15,10 +15,31 @@ namespace Tests.ValidatorsProject
             RuleFor(m => m.Name)
                     .NotEmpty().WithMessage("Name is requried")
                     .Length(3, 5).WithMessage("Name must be between 3 and 5 characters long.");
-            RuleFor(m => m.ProductId).GreaterThanOrEqualTo(0);
-            RuleFor(m => m.RRP).GreaterThan(0);
+            RuleFor(m => m.ProductId).GreaterThanOrEqualTo(0).LessThanOrEqualTo(34534);
+            RuleFor(m => m.RRP).GreaterThanOrEqualTo(m=>m.CostPrice)
+                .LessThan(1234);
+                
+
             RuleFor(m => m.ProductDetails)
                 .NotNull().WithMessage("Details are required!");
+            RuleFor(m => m.CostPrice).GreaterThan(0);
+        }
+    }
+    public class ProductDetailsValidator : AbstractValidator<ProductDetails>, IValidator
+    {
+        public ProductDetailsValidator()
+        {
+            RuleFor(m => m.Name)
+                .Length(4, 6);
+        }
+    }
+
+    public class ProductSupplierValidator : AbstractValidator<ProductSupplier>, IValidator
+    {
+        public ProductSupplierValidator()
+        {
+            RuleFor(m => m.SupplierName)
+                .Length(9);
         }
     }
 }

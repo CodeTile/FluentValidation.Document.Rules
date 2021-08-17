@@ -12,17 +12,7 @@ namespace Test.ModelsProject
         public int ProductId { get; set; }
         public int ReorderAtItemsInStock { get; set; }
         public decimal RRP { get; set; }
-    }
 
-    public class ProductDetails
-    {
-        public string Name { get; set; }
-        public int ProductId { get; set; }
-    }
-
-    public class ProductSupplier
-    {
-        public int ProductId { get; set; }
-        public string SupplierName { get; set; }
+        public decimal CostPrice { get; set; }
     }
 }

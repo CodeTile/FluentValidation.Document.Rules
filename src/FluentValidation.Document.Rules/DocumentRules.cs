@@ -25,7 +25,7 @@ namespace FluentValidation.Document.Rules
         public void DocumentAssembly(string assemblyPath)
         {
             Console.WriteLine($"Documenting Assembly : {Helper.Settings.AssemblyToDocument}");
-            var extractedRulesforAssembly = new ArrayList();
+            //var extractedRulesforAssembly = new ArrayList();
             // ExtractRulesForAssembly(assemblyPath);
             DocumentRulesForAssembly(ExtractRulesForAssembly(assemblyPath), OutputType.Markdown);
         }
@@ -37,7 +37,7 @@ namespace FluentValidation.Document.Rules
                 AssemblyFullPath = assemblyPath,
             };
             var assembly = Assembly.LoadFrom(assemblyPath);
-            foreach (Type validatorType in assembly.GetTypes().Where(m => m.BaseType.Name.StartsWith("AbstractValidator")))
+            foreach (Type validatorType in assembly.GetTypes().Where(m => m.BaseType.Name.StartsWith("AbstractValidator")).OrderBy(m=>m.FullName) )
             {
                 var rulesForValidator = new RuleValidator()
                 {
@@ -58,6 +58,7 @@ namespace FluentValidation.Document.Rules
                         Expression = rule.Expression.ToString(),
                         RuleDetails = new List<RuleDetail>(),
                     };
+
                     foreach (FluentValidation.Internal.IRuleComponent component in rule.Components)
                     {
                         rh.RuleDetails.Add(new RuleDetail()
@@ -66,6 +67,7 @@ namespace FluentValidation.Document.Rules
                             ComponentValidator = component.Validator,
                         });
                     }
+
                     rulesForValidator.Rules.Add(rh);
                 }
                 validatorsForAssembly.Validators.Add(rulesForValidator);
@@ -122,11 +124,55 @@ namespace FluentValidation.Document.Rules
             {
                 sb.AppendLine($"### {validator.ValidatorName}");
 
-                sb.AppendLine("| Field | DataType | Model | LINQ Expression | Rule Count |  ");
-                sb.AppendLine("|---|---|---|---|---|  ");
+                sb.AppendLine("| Field | DataType | Model | LINQ Expression | Rule Count | Validator| ValidationValue | Error Message | ");
+                sb.AppendLine("|---|---|---|---|---|---|---|---|  ");
                 foreach (RuleHeader rh in validator.Rules)
                 {
-                    sb.AppendLine($"| {rh.PropertyName} | {rh.PropertyType} | {rh.ModelType} | {rh.Expression} | {rh.RuleDetails.Count()} |  ");
+                    string line = $"| {rh.PropertyName} | {rh.PropertyType} | {rh.ModelType} | {rh.Expression} | {rh.RuleDetails.Count} |  ";
+                    foreach (RuleDetail rd in rh.RuleDetails)
+                    {
+
+                        var pv = rd.ComponentValidator;
+                        string errorMessage = rd.ErrorMessage;
+                        string validatiorType = string.Empty;
+                        string valueToCompare = string.Empty;
+                        if (pv is IComparisonValidator)
+                        {
+                            var a = (IComparisonValidator)pv;
+                            validatiorType = a.Comparison.ToString();
+                            if (a.ValueToCompare != null)
+                                valueToCompare = a.ValueToCompare?.ToString()?.Replace("00:00:00", string.Empty);
+                            else if (a.MemberToCompare != null)
+                            {
+                                string sign = "";
+                                sign = pv switch
+                                {
+                                    IGreaterThanOrEqualValidator => " >= ",
+                                    ILessThanOrEqualValidator => " <= ",
+                                    _ => throw new NotImplementedException(),
+                                };
+                                valueToCompare = $"{sign} {a.MemberToCompare.Name}";
+                            }
+                        }
+                        else if (pv is IExactLengthValidator)
+                        {
+                            var c = (IExactLengthValidator)pv;
+                            validatiorType = c.Name;
+                            valueToCompare = c.Min.ToString();
+                        }
+                        else if (pv is ILengthValidator)
+                        {
+                            var b = (ILengthValidator)pv;
+                            valueToCompare = $"{b.Min} >= Value <= {b.Max} ";
+                            validatiorType = b.Name;
+                        }
+                        else if (pv is INotNullValidator)
+                            validatiorType = pv.Name;
+                        else if (pv is INotEmptyValidator)
+                            validatiorType = pv.Name;
+                        sb.AppendLine($"{line} {validatiorType}|{valueToCompare }| {errorMessage} |");
+                        line = "||||||";
+                    }
                 }
             }
 
