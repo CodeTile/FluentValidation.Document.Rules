@@ -35,13 +35,16 @@ namespace FluentValidation.Document.Rules
                 AssemblyInfo = new FileInfo(assemblyPath),
             };
             var assembly = Assembly.LoadFrom(assemblyPath);
+            Console.WriteLine($"    Interrogating '{validatorsForAssembly.AssemblyInfo.Name}'");
             var possibleValidators = assembly.GetTypes().Where(m => m.BaseType != null)?.OrderBy(m => m.FullName);
+
             foreach (Type validatorType in possibleValidators.Where(m => m.BaseType.Name.Contains("AbstractValidator")))
             {
                 var rulesForValidator = new RuleValidator()
                 {
                     ValidatorFullName = validatorType.FullName,
                 };
+                Console.WriteLine($"      |--- {rulesForValidator.ValidatorName}");
                 var validatorClass = Activator.CreateInstance(validatorType, true);
                 var rules = (IEnumerable)Helper.Refelction.RefelctInstanceProperty(validatorClass, "Rules");
                 var _innerCollection = (IEnumerable)Helper.Refelction.ReflectInstanceField(rules, "_innerCollection");
@@ -168,6 +171,7 @@ namespace FluentValidation.Document.Rules
 
         private void GenerateForAssemblyHTML(RuleAssembly rulesForAssembly)
         {
+            Console.WriteLine("Documenting as HTML");
             var sb = new StringBuilder();
             sb.AppendLine("<!DOCTYPE html>");
             sb.AppendLine("<html>");
@@ -211,14 +215,14 @@ namespace FluentValidation.Document.Rules
 
             foreach (RuleValidator validator in rulesForAssembly.Validators)
             {
-                Console.WriteLine($"  {validator.ValidatorName}");
+                Console.WriteLine($"    {validator.ValidatorName}");
                 sb.AppendLine($"  <h2>{validator.ValidatorName}</h2>");
                 sb.AppendLine($"<table  class=\"table\"  id=\"{validator.ValidatorName}\">");
                 sb.AppendLine($"<tr><th>Field </th><th> DataType  </th><th>  Model  </th><th>  LINQ Expression  </th><th>  Rule Count  </th><th>  Validator </th><th>  ValidationValue  </th><th>  Error Message</th></tr>");
 
                 foreach (RuleHeader rh in validator.Rules)
                 {
-                    Console.WriteLine($"      |-- {rh.PropertyName}");
+                    Console.WriteLine($"      |---{rh.PropertyName}");
                     string line = $"<tr><td> {rh.PropertyName} </td><td> {rh.PropertyType} </td><td>  {rh.ModelType} </td><td>  {rh.Expression} </td><td>  {rh.RuleDetails.Count} </td><td>   ";
                     foreach (RuleDetail rd in rh.RuleDetails)
                     {
@@ -241,19 +245,20 @@ namespace FluentValidation.Document.Rules
 
         private void GenerateForAssemblyMarkdown(RuleAssembly rulesForAssembly)
         {
+            Console.WriteLine("Documenting as Markdown");
             var sb = new StringBuilder();
             sb.AppendLine($"## {rulesForAssembly.AssemblyInfo.NameNoExtension()}  ");
             sb.AppendLine("----  ");
             foreach (RuleValidator validator in rulesForAssembly.Validators)
             {
-                Console.WriteLine($"  Validator : {validator.ValidatorName}.");
+                Console.WriteLine($"    {validator.ValidatorName}");
                 sb.AppendLine($"### {validator.ValidatorName}");
 
                 sb.AppendLine("| Field | DataType | Model | LINQ Expression | Rule Count | Validator| ValidationValue | Error Message | ");
                 sb.AppendLine("|---|---|---|---|---|---|---|---|  ");
                 foreach (RuleHeader rh in validator.Rules)
                 {
-                    Console.WriteLine($"      |-- {rh.PropertyName}");
+                    Console.WriteLine($"      |---{rh.PropertyName}");
                     string line = $"| {rh.PropertyName} | {rh.PropertyType} | {rh.ModelType} | {rh.Expression} | {rh.RuleDetails.Count} |  ";
                     foreach (RuleDetail rd in rh.RuleDetails)
                     {
