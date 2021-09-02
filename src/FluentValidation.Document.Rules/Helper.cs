@@ -1,18 +1,40 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using Microsoft.Extensions.Configuration;
 
 namespace FluentValidation.Document.Rules
 {
     public static class Helper
     {
-        private static string ResolvePath(string location)
+        internal static string ResolvePath(string location)
         {
             return location
                        .Replace("{Desktop}", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), StringComparison.OrdinalIgnoreCase)
                        .Replace("{MyDocuments}", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string GetSolutionRoot()
+        {
+            if (Directory.GetCurrentDirectory().Contains("FluentValidation.Document.Rules", StringComparison.CurrentCultureIgnoreCase))
+            {
+                var myPathArray = Directory.GetCurrentDirectory().Split('\\');
+                var sb = new StringBuilder();
+                var i = 0;
+                sb.Append($"{myPathArray[0]}\\");
+                while (i + 1 < myPathArray.Length && myPathArray[i].ToLower() != "mrs.database")
+                {
+                    sb.Append($"{myPathArray[i + 1]}\\");
+                    i++;
+                }
+                return sb.ToString();
+            }
+            else
+            {
+                var root = Directory.GetParent(Directory.GetCurrentDirectory()).Parent + "\\FluentValidation.Document.Rules\\";
+                return root;
+            }
         }
 
         public static class Refelction

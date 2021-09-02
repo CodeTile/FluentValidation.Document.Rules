@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentValidation.Document.Rules\FluentValidation.Document.Rules.csproj" />
+    <ProjectReference Include="..\Test.ModelsProject\Test.ModelsProject.csproj" />
+    <ProjectReference Include="..\Tests.ValidatorsProject\Tests.ValidatorsProject.csproj" />
   </ItemGroup>
 
   <ItemGroup>

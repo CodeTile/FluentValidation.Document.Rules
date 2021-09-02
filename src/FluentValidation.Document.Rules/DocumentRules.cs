@@ -32,7 +32,7 @@ namespace FluentValidation.Document.Rules
         {
             var validatorsForAssembly = new RuleAssembly()
             {
-                AssemblyFullPath = assemblyPath,
+                AssemblyInfo = new FileInfo(assemblyPath),
             };
             var assembly = Assembly.LoadFrom(assemblyPath);
             var possibleValidators = assembly.GetTypes().Where(m => m.BaseType != null)?.OrderBy(m => m.FullName);
@@ -117,7 +117,7 @@ namespace FluentValidation.Document.Rules
         private void GenerateForAssemblyMarkdown(RuleAssembly rulesForAssembly)
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"## {rulesForAssembly.AssemblyName}  ");
+            sb.AppendLine($"## {rulesForAssembly.AssemblyInfo.NameNoExtension()}  ");
             sb.AppendLine("----  ");
             foreach (RuleValidator validator in rulesForAssembly.Validators)
             {
@@ -130,7 +130,6 @@ namespace FluentValidation.Document.Rules
                     string line = $"| {rh.PropertyName} | {rh.PropertyType} | {rh.ModelType} | {rh.Expression} | {rh.RuleDetails.Count} |  ";
                     foreach (RuleDetail rd in rh.RuleDetails)
                     {
-
                         var pv = rd.ComponentValidator;
                         string errorMessage = rd.ErrorMessage;
                         string validatiorType = string.Empty;
@@ -156,7 +155,6 @@ namespace FluentValidation.Document.Rules
                                     throw new NotImplementedException();
 
                                 valueToCompare = $"{sign} {a.MemberToCompare.Name}";
-
                             }
                         }
                         else if (pv is IExactLengthValidator)
@@ -181,7 +179,7 @@ namespace FluentValidation.Document.Rules
                 }
             }
 
-            var filePath = Path.Combine(Helper.Settings.ExportFolder.Markdown, rulesForAssembly.AssemblyName + "md");
+            var filePath = Path.Combine(Helper.Settings.ExportFolder.Markdown, rulesForAssembly.AssemblyInfo.NameNoExtension() + ".md");
             var fi = new FileInfo(filePath);
             if (fi.Exists)
                 fi.Delete();
