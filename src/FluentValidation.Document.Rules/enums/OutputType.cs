@@ -3,5 +3,6 @@
     public enum OutputType
     {
         Markdown = 0,
+        HTML,
     }
 }
