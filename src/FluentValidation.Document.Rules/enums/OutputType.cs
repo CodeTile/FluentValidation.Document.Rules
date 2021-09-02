@@ -2,6 +2,9 @@
 {
     public enum OutputType
     {
-        Markdown = 0,
+        None = 0,
+        All = 100,
+        Markdown,
+        HTML,
     }
 }

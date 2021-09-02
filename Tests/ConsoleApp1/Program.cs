@@ -8,8 +8,8 @@ namespace ConsoleApp1
     {
         private static void Main(string[] args)
         {
-            using var x = new DocumentRules();            
-            x.DocumentAssembly(OutputType.Markdown);
+            using var x = new DocumentRules();
+            x.DocumentAssembly(OutputType.All);
         }
     }
 }
