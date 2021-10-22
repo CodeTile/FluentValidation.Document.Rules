@@ -240,6 +240,10 @@ namespace FluentValidation.Document.Rules
             var fi = new FileInfo(filePath);
             if (fi.Exists)
                 fi.Delete();
+
+            if (!fi.Directory.Exists)
+                fi.Directory.Create();
+
             File.WriteAllText(filePath, sb.ToString());
         }
 
@@ -272,6 +276,9 @@ namespace FluentValidation.Document.Rules
             var fi = new FileInfo(filePath);
             if (fi.Exists)
                 fi.Delete();
+
+            if (!fi.Directory.Exists)
+                fi.Directory.Create();
             File.WriteAllText(filePath, sb.ToString());
         }
     }
