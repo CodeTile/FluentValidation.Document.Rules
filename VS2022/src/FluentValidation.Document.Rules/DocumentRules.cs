@@ -34,8 +34,10 @@ namespace FluentValidation.Document.Rules
             {
                 AssemblyInfo = new FileInfo(assemblyPath),
             };
-            var assembly = Assembly.LoadFrom(assemblyPath);
+            Assembly assembly = Assembly.LoadFrom(validatorsForAssembly.AssemblyInfo.FullName);
+
             Console.WriteLine($"    Interrogating '{validatorsForAssembly.AssemblyInfo.Name}'");
+
             var possibleValidators = assembly.GetTypes().Where(m => m.BaseType != null)?.OrderBy(m => m.FullName);
 
             foreach (Type validatorType in possibleValidators.Where(m => m.BaseType.Name.Contains("AbstractValidator")))
@@ -226,7 +228,7 @@ namespace FluentValidation.Document.Rules
                     string line = $"<tr><td> {rh.PropertyName} </td><td> {rh.PropertyType} </td><td>  {rh.ModelType} </td><td>  {rh.Expression} </td><td>  {rh.RuleDetails.Count} </td><td>   ";
                     foreach (RuleDetail rd in rh.RuleDetails)
                     {
-                        sb.AppendLine($"{line} {rd.ValidatorType}</td><td> {rd.ValueToCompare }</td><td>  {rd.ErrorMessage} </td></tr>");
+                        sb.AppendLine($"{line} {rd.ValidatorType}</td><td> {rd.ValueToCompare}</td><td>  {rd.ErrorMessage} </td></tr>");
                         line = "<tr><td colspan=\"5\">&nbsp</td><td>  ";
                     }
                 }
@@ -266,7 +268,7 @@ namespace FluentValidation.Document.Rules
                     string line = $"| {rh.PropertyName} | {rh.PropertyType} | {rh.ModelType} | {rh.Expression} | {rh.RuleDetails.Count} |  ";
                     foreach (RuleDetail rd in rh.RuleDetails)
                     {
-                        sb.AppendLine($"{line} {rd.ValidatorType}|{rd.ValueToCompare }| {rd.ErrorMessage} |");
+                        sb.AppendLine($"{line} {rd.ValidatorType}|{rd.ValueToCompare}| {rd.ErrorMessage} |");
                         line = "||||||";
                     }
                 }
